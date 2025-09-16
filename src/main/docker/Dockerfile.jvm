@@ -82,12 +82,21 @@ FROM registry.access.redhat.com/ubi9/openjdk-21:1.23
 
 ENV LANGUAGE='en_US:en'
 
+USER root
+ENV TZ=America/El_Salvador
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # We make four distinct layers so if there are application changes the library layers can be re-used
 COPY --chown=185 target/quarkus-app/lib/ /deployments/lib/
 COPY --chown=185 target/quarkus-app/*.jar /deployments/
 COPY --chown=185 target/quarkus-app/app/ /deployments/app/
 COPY --chown=185 target/quarkus-app/quarkus/ /deployments/quarkus/
+
+RUN mkdir -p /home/jboss/opt/mh/report && \
+    chown -R 185:185 /home/jboss/opt/mh/report \
+
+RUN mkdir -p /home/jboss/opt/mh/log && \
+    chown -R 185:185 /home/jboss/opt/mh/log
 
 EXPOSE 8080
 USER 185
