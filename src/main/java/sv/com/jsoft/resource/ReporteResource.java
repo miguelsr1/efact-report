@@ -20,10 +20,13 @@ public class ReporteResource extends SecurityService {
     @GET
     @Path("/{idFactura}")
     public Response getRpt(@PathParam("idFactura") Long idFactura) {
+        Log.info("GET /: " + idFactura + " - " + identity.getPrincipal().getName());
         JsonObject jsonPdf = reporteService.getReportDte(idFactura, identity.getPrincipal().getName());
-        if(jsonPdf.isEmpty()){
+        if (jsonPdf.isEmpty()) {
+            Log.info("GET /: " + idFactura + " - " + identity.getPrincipal().getName() + " NOT_FOUND");
             return Response.status(Response.Status.NOT_FOUND).build();
-        }else {
+        } else {
+            Log.info("GET /: " + idFactura + " - " + identity.getPrincipal().getName() + " OK");
             return Response.ok(jsonPdf.toString()).build();
         }
     }
@@ -32,11 +35,13 @@ public class ReporteResource extends SecurityService {
     @Path("/pdf/{idFactura}")
     @RolesAllowed("ROLE_EMISOR")
     public Response getPdfDte(@PathParam("idFactura") Long idFactura) {
-        Log.info("getPdfDte: " + idFactura);
+        Log.info("GET /pdf/" + idFactura + " - " + identity.getPrincipal().getName());
         JsonObject jsonPdf = reporteService.findPdfDte(idFactura, identity.getPrincipal().getName());
-        if(jsonPdf.isEmpty()){
+        if (jsonPdf.isEmpty()) {
+            Log.info("GET /pdf/" + idFactura + " - " + identity.getPrincipal().getName() + " NOT_FOUND");
             return Response.status(Response.Status.NOT_FOUND).build();
-        }else {
+        } else {
+            Log.info("GET /pdf/" + idFactura + " - " + identity.getPrincipal().getName() + " OK");
             return Response.ok(jsonPdf.toString()).build();
         }
     }
@@ -45,10 +50,13 @@ public class ReporteResource extends SecurityService {
     @Path("/json/{idFactura}")
     @RolesAllowed("ROLE_EMISOR")
     public Response getJsonDte(@PathParam("idFactura") Long idFactura) {
+        Log.info("GET /json/" + idFactura + " - " + identity.getPrincipal().getName());
         JsonObject jsonPdf = reporteService.findJsonDte(idFactura, identity.getPrincipal().getName());
-        if(jsonPdf.isEmpty()){
+        if (jsonPdf.isEmpty()) {
+            Log.info("GET /json/" + idFactura + " - " + identity.getPrincipal().getName() + " NOT_FOUND");
             return Response.status(Response.Status.NOT_FOUND).build();
-        }else {
+        } else {
+            Log.info("GET /json/" + idFactura + " - " + identity.getPrincipal().getName() + " OK");
             return Response.ok(jsonPdf.toString()).build();
         }
     }
