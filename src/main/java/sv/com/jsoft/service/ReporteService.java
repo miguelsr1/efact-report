@@ -6,6 +6,9 @@ import io.agroal.api.AgroalDataSource;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceUnit;
+import jakarta.persistence.Query;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import sv.com.jsoft.model.BitacoraMh;
@@ -36,11 +39,9 @@ public class ReporteService {
 
 
     public JsonObject getReportDte(Long idFactura, String username) {
-
-        //Contribuyente contribuyente = utilContribuyente.findContribuyenteByUser(username);
         Factura factura = Factura.findById(idFactura);
         Contribuyente contribuyente = Contribuyente.findById(factura.idContribuyente);
-        if (factura == null) {
+        if (contribuyente == null) {
             return new JsonObject();
         }
 
